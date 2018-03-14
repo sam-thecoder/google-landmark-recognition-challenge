@@ -1,0 +1,7 @@
+*.pyc
+*.csv
+
+cookies.txt
+
+training_images
+test_images
