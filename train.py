@@ -2,6 +2,8 @@ from keras.preprocessing.image import ImageDataGenerator, array_to_img, img_to_a
 from keras.models import Sequential
 from keras.layers import Conv2D, MaxPooling2D
 from keras.layers import Activation, Dropout, Flatten, Dense
+from keras.callbacks import EarlyStopping
+from keras.callbacks import ModelCheckpoint
 
 model = Sequential()
 model.add(Conv2D(32, (3, 3), input_shape=(3, 150, 150)))
@@ -20,11 +22,17 @@ model.add(Flatten())  # this converts our 3D feature maps to 1D feature vectors
 model.add(Dense(64))
 model.add(Activation('relu'))
 model.add(Dropout(0.5))
-model.add(Dense(1))
-model.add(Activation('sigmoid'))
+model.add(Dense(5))
+model.add(Dense(activation='softmax'))
+model.compile(loss='categorical_crossentropy', optimizer='adam')
+monitor = EarlyStopping(monitor='val_loss', min_delta=1e-3, patience=5, verbose=0, mode='auto')
+checkpointer = ModelCheckpoint(filepath="best_weights.hdf5", verbose=0, save_best_only=True) # save best model
 
 model.compile(loss='binary_crossentropy',
               optimizer='adam',
+              callbacks=[monitor,checkpointer],
+              verbose=0,
+              epochs=1000,
               metrics=['accuracy'])
 
 batch_size = 16
@@ -62,5 +70,5 @@ model.fit_generator(
         epochs=50,
         validation_data=validation_generator,
         validation_steps=800 // batch_size)
-
-model.save_weights('first_try.h5')
+model.load_weights('best_weights.hdf5') # load weights from best model
+model.save('last_model.h5')
