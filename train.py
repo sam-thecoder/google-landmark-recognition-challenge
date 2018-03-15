@@ -71,8 +71,7 @@ validation_generator = test_datagen.flow_from_directory(
 
 model.fit_generator(
     train_generator,
-    validation_data=validation_generator,
-    validation_steps=nb_validation_samples // batch_size)
+    validation_data=validation_generator)
 
 model.load_weights('best_weights.hdf5') # load weights from best model
 model.save('last_model.h5')
