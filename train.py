@@ -3,6 +3,8 @@ from keras.models import Sequential
 from keras.layers import Conv2D, MaxPooling2D
 from keras.layers import Activation, Dropout, Flatten, Dense
 from keras import backend as K
+from keras.callbacks import EarlyStopping
+from keras.callbacks import ModelCheckpoint
 
 
 # dimensions of our images.
