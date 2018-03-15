@@ -75,7 +75,6 @@ model.fit_generator(
     epochs=epochs,
     validation_steps=nb_validation_samples // batch_size,
     callbacks=[monitor,checkpointer], 
-    metrics=['accuracy'],
     validation_data=validation_generator)
 
 model.load_weights('best_weights.hdf5') # load weights from best model
