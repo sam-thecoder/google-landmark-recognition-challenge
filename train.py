@@ -31,6 +31,8 @@ else:
     
 num_classes = 14951
 
+image_input = Input(shape=(150, 150, 3))
+
 model = ResNet50(input_tensor=image_input, include_top=True,weights='imagenet')
 model.summary()
 last_layer = model.get_layer('avg_pool').output
