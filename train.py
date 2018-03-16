@@ -69,6 +69,9 @@ validation_generator = test_datagen.flow_from_directory(
     batch_size=batch_size,
     class_mode='categorical')
 
+from PIL import ImageFile
+ImageFile.LOAD_TRUNCATED_IMAGES = True
+
 model.fit_generator(
     train_generator,
     steps_per_epoch=nb_train_samples // batch_size,
