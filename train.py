@@ -7,6 +7,7 @@ import numpy as np
 from keras import backend as K
 from keras.callbacks import EarlyStopping
 from keras.callbacks import ModelCheckpoint
+from keras.preprocessing.image import ImageDataGenerator
 
 #Get back the convolutional part of a VGG network trained on ImageNet
 model_vgg16_conv = VGG16(weights='imagenet', include_top=False)
