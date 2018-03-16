@@ -1,6 +1,7 @@
 from keras.preprocessing.image import ImageDataGenerator
 from keras.models import Sequential
-from keras.layers import Conv2D, MaxPooling2D, Activation, Dropout, Flatten, Dense, Input, Model
+from keras.layers import Conv2D, MaxPooling2D, Activation, Dropout, Flatten, Dense, Input
+from keras.models import Model
 from keras import backend as K
 from keras.callbacks import EarlyStopping
 from keras.callbacks import ModelCheckpoint
