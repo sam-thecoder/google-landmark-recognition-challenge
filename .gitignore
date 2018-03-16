@@ -6,3 +6,6 @@ cookies.txt
 training_images
 test_images
 validation_images
+
+*.hdf5
+*.h5
