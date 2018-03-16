@@ -1,17 +1,28 @@
-from keras.preprocessing.image import ImageDataGenerator
-from keras.models import Sequential
-from keras.layers import Conv2D, MaxPooling2D, Activation, Dropout, Flatten, Dense, Input
-from keras.models import Model
-from keras import backend as K
-from keras.callbacks import EarlyStopping
-from keras.callbacks import ModelCheckpoint
-
-import numpy as np
-import os
-import time
-from resnet50 import ResNet50
+from keras.applications.vgg16 import VGG16
 from keras.preprocessing import image
-from keras.utils import np_utils
+from keras.applications.vgg16 import preprocess_input
+from keras.layers import Input, Flatten, Dense
+from keras.models import Model
+import numpy as np
+from keras import backend as K
+
+#Get back the convolutional part of a VGG network trained on ImageNet
+model_vgg16_conv = VGG16(weights='imagenet', include_top=False)
+model_vgg16_conv.summary()
+
+#Create your own input format (here 3x200x200)
+input = Input(shape=(3,200,200),name = 'image_input')
+
+# Generate a model with all layers (with top)
+vgg16 = VGG16(weights=None, include_top=True)
+
+#Add a layer where input is the output of the  second last layer 
+x = Dense(14951, activation='softmax', name='predictions')(vgg16.layers[-2].output)
+
+#Then create the corresponding model 
+my_model = Model(input=vgg16.input, output=x)
+my_model.summary()
+
 
 
 # dimensions of our images.
@@ -28,25 +39,6 @@ if K.image_data_format() == 'channels_first':
     input_shape = (3, img_width, img_height)
 else:
     input_shape = (img_width, img_height, 3)
-    
-num_classes = 14951
-
-image_input = Input(shape=(150, 150, 3))
-
-model = ResNet50(input_tensor=image_input, include_top=True,weights='imagenet')
-model.summary()
-last_layer = model.get_layer('avg_pool').output
-x= Flatten(name='flatten')(last_layer)
-out = Dense(num_classes, activation='softmax', name='output_layer')(x)
-custom_resnet_model = Model(inputs=image_input,outputs= out)
-custom_resnet_model.summary()
-
-for layer in custom_resnet_model.layers[:-1]:
-	layer.trainable = False
-
-custom_resnet_model.layers[-1].trainable
-
-custom_resnet_model.compile(loss='categorical_crossentropy',optimizer='adam',metrics=['accuracy'])
 
 monitor = EarlyStopping(monitor='val_loss', min_delta=1e-3, patience=5, verbose=0, mode='auto')
 checkpointer = ModelCheckpoint(filepath="best_weights.hdf5", verbose=0, save_best_only=True) # save best model
@@ -77,7 +69,7 @@ validation_generator = test_datagen.flow_from_directory(
 from PIL import ImageFile
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
-custom_resnet_model.fit_generator(
+my_model.fit_generator(
     train_generator,
     steps_per_epoch=nb_train_samples // batch_size,
     epochs=epochs,
@@ -85,6 +77,5 @@ custom_resnet_model.fit_generator(
     callbacks=[monitor,checkpointer], 
     validation_data=validation_generator)
 
-custom_resnet_model.load_weights('best_weights2.hdf5') # load weights from best model
-custom_resnet_model.save('save_model.h5')
-   
+my_model.load_weights('best_weights2.hdf5') # load weights from best model
+my_model.save('save_model.h5')
