@@ -44,7 +44,7 @@ model.add(Dense(14951, activation="softmax"))
 monitor = EarlyStopping(monitor='val_loss', min_delta=1e-3, patience=5, verbose=0, mode='auto')
 checkpointer = ModelCheckpoint(filepath="best_weights.hdf5", verbose=0, save_best_only=True) # save best model
 
-model.compile(loss='categorical_crossentropy', optimizer='adam')
+model.compile(loss='categorical_crossentropy', optimizer='rmsprop')
 
 # this is the augmentation configuration we will use for training
 train_datagen = ImageDataGenerator(
