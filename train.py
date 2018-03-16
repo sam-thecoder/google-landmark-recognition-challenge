@@ -25,7 +25,7 @@ x = Dense(14951, activation='softmax', name='predictions')(vgg16.layers[-2].outp
 #Then create the corresponding model 
 my_model = Model(input=vgg16.input, output=x)
 my_model.summary()
-my_model.compile(loss='categorical_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
+my_model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
 
 
