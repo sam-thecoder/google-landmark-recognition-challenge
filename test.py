@@ -18,7 +18,7 @@ test_generator = test_datagen.flow_from_directory(
 from PIL import ImageFile
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
-scoreSeg = model.evaluate_generator(test_generator,5250)
+scoreSeg = model.evaluate_generator(test_generator,100)
 print("Accuracy = ",scoreSeg[1])
 
 predict = model.predict_generator(test_generator, 115872)
