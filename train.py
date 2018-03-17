@@ -60,6 +60,7 @@ test_datagen = ImageDataGenerator(rescale=1. / 255)
 train_generator = train_datagen.flow_from_directory(
     train_data_dir,
     target_size=(img_width, img_height),
+    color_mode='grayscale',
     batch_size=batch_size,
     class_mode='categorical')
 
@@ -67,6 +68,7 @@ validation_generator = test_datagen.flow_from_directory(
     validation_data_dir,
     target_size=(img_width, img_height),
     batch_size=batch_size,
+    color_mode='grayscale',
     class_mode='categorical')
 
 from PIL import ImageFile
@@ -81,4 +83,4 @@ model.fit_generator(
     validation_data=validation_generator)
 
 model.load_weights('best_weights.hdf5') # load weights from best model
-model.save('last_model.h5')
+model.save('grey_model.h5')
