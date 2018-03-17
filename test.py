@@ -18,6 +18,6 @@ test_generator = test_datagen.flow_from_directory(
 from PIL import ImageFile
 ImageFile.LOAD_TRUNCATED_IMAGES = True
 
-predict = model.predict_generator(test_generator)
+predict = model.predict_generator(test_generator, 115872)
 
 np.save('prediction.npy', predict)
