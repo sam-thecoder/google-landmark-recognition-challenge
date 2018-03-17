@@ -1,4 +1,5 @@
 from keras.models import load_model
+from keras.preprocessing.image import ImageDataGenerator
 import numpy
 
 model = load_model('last_model.h5')
