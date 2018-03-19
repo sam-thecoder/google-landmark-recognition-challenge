@@ -15,7 +15,7 @@ validation_data_dir = 'validation_images'
 nb_train_samples = 2000
 nb_validation_samples = 800
 epochs = 50
-batch_size = 16
+batch_size = 29902
 
 if K.image_data_format() == 'channels_first':
     input_shape = (3, img_width, img_height)
@@ -51,25 +51,28 @@ train_datagen = ImageDataGenerator(
     rescale=1. / 255,
     shear_range=0.2,
     zoom_range=0.2,
+    batch_size=29902,
     horizontal_flip=True)
 
 # this is the augmentation configuration we will use for testing:
 # only rescaling
-test_datagen = ImageDataGenerator(rescale=1. / 255)
+test_datagen = ImageDataGenerator(rescale=1. / 255, batch_size=29902)
 
 train_generator = train_datagen.flow_from_directory(
     train_data_dir,
     target_size=(img_width, img_height),
     color_mode='grayscale',
     batch_size=batch_size,
-    class_mode='categorical')
+    class_mode='categorical',
+    shuffle=True)
 
 validation_generator = test_datagen.flow_from_directory(
     validation_data_dir,
     target_size=(img_width, img_height),
     batch_size=batch_size,
     color_mode='grayscale',
-    class_mode='categorical')
+    class_mode='categorical',
+    shuffle=True)
 
 from PIL import ImageFile
 ImageFile.LOAD_TRUNCATED_IMAGES = True
@@ -84,3 +87,6 @@ model.fit_generator(
 
 model.load_weights('best_weights.hdf5') # load weights from best model
 model.save('grey_model.h5')
+
+scoreSeg = model.evaluate_generator(validation_generator,100)
+print("Accuracy = ",scoreSeg[1])
