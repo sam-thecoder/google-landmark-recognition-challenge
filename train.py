@@ -15,7 +15,7 @@ validation_data_dir = 'validation_images'
 nb_train_samples = 2000
 nb_validation_samples = 800
 epochs = 50
-batch_size = 2000
+batch_size = 1000
 
 if K.image_data_format() == 'channels_first':
     input_shape = (1, img_width, img_height)
