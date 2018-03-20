@@ -12,10 +12,10 @@ img_width, img_height = 250, 250
 
 train_data_dir = 'training_images'
 validation_data_dir = 'validation_images'
-nb_train_samples = 20000
-nb_validation_samples = 8000
+nb_train_samples = 2000
+nb_validation_samples = 800
 epochs = 50
-batch_size = 100
+batch_size = 10
 
 if K.image_data_format() == 'channels_first':
     input_shape = (1, img_width, img_height)
