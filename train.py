@@ -87,5 +87,5 @@ model.fit_generator(
 model.load_weights('best_weights.hdf5') # load weights from best model
 model.save('grey_model.h5')
 
-scoreSeg = model.evaluate_generator(validation_generator,100)
+scoreSeg = model.evaluate_generator(validation_generator,800)
 print("Accuracy = ",scoreSeg[1])
