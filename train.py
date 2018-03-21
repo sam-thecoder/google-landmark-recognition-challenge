@@ -36,9 +36,8 @@ model.add(Activation('relu'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 
 model.add(Flatten())
-model.add(Dense(32))
+model.add(Dense(1000))
 model.add(Activation('relu'))
-model.add(Dropout(0.5))
 model.add(Dense(14951, activation="softmax"))
 
 monitor = EarlyStopping(monitor='val_loss', min_delta=1e-3, patience=5, verbose=0, mode='auto')
